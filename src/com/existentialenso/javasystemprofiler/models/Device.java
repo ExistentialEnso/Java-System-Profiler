@@ -2,10 +2,13 @@
  * @author Thorne Melcher <tmelcher@portdusk.com>
  * @copyright 2013 Thorne Melcher
  * @license GPLv3 
+ * @version 0.0.2
  */
 
 package com.existentialenso.javasystemprofiler.models;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -14,7 +17,9 @@ import java.util.ArrayList;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * Represents the Device being profiled.
+ * Represents the Device being profiled. The screen-related information is limited to what the OS views as the 
+ * "main" screen. This is all that's easily available to Java, though this may potentially be overhauled in
+ * the future to get more.
  */
 public class Device {
 	/**
@@ -36,6 +41,22 @@ public class Device {
 	 * The name of the OS the device is using.
 	 */
 	protected String operating_system;
+	
+	/**
+	 * The dimensions of the primary screen of this device in pixels. 
+	 */
+	protected Dimension screen_dimensions;
+	
+	/**
+	 * The DPI (dots per inch) rating for the primary screen for this device.
+	 */
+	protected int screen_dpi;
+	
+	/**
+	 * The estimated size of the primary screen's panel in inches. Accuracy not guranteed
+	 * (calculated from screen_dimensions and screen_dpi).
+	 */
+	protected double estimated_screen_size;
 	
 	/**
 	 * Populates the Device object based on data from the machine actually running the code.
@@ -71,6 +92,14 @@ public class Device {
 			ip_address = "Unknown";
 		}
 		
+		screen_dimensions = Toolkit.getDefaultToolkit().getScreenSize();
+		screen_dpi = Toolkit.getDefaultToolkit().getScreenResolution();
+		
+		// Use the Pythagorean theorem to calculate the screen's size (corner to corner in inches)
+		estimated_screen_size = Math.sqrt(
+				Math.pow((screen_dimensions.height/screen_dpi), 2) +
+				Math.pow((screen_dimensions.width/screen_dpi), 2));
+		
 		// Fill in other, easy values
 		operating_system = System.getProperty("os.name");
 	}
@@ -100,5 +129,14 @@ public class Device {
 	 */
 	public String getIpAddress() {
 		return ip_address;
+	}
+	
+	/**
+	 * Gets the estimated screen size of the device's primary screen.
+	 * 
+	 * @return
+	 */
+	public Double getEstimatedScreenSize() {
+		return estimated_screen_size;
 	}
 }
