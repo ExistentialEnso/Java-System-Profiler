@@ -10,6 +10,7 @@ package com.existentialenso.javasystemprofiler.models;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
+import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ public class Device {
 	 * The canonical name of the device.
 	 */
 	protected String name;
+	
+	protected String processor_name;
+	
+	protected String processor_architecture;
 	
 	/**
 	 * The local IP address of the device.
@@ -62,11 +67,15 @@ public class Device {
 	 * Populates the Device object based on data from the machine actually running the code.
 	 */
 	public void profileThisDevice() {
+		// Easy stuff
+		operating_system = System.getProperty("os.name");
+		
+		// Prepare to load Drive information
 		FileSystemView fsv = FileSystemView.getFileSystemView();
 		File[] roots = File.listRoots();
 		drives = new ArrayList<Drive>();
 		
-		// Map information for each drive available to the JVM to one of our objects
+		// Map information to our Drive objects
 		for (File fDrive: roots) {
 			if(fDrive.getTotalSpace() != 0) {
 				Drive drive = new Drive();
@@ -92,6 +101,7 @@ public class Device {
 			ip_address = "Unknown";
 		}
 		
+		// Use AWT's (yes, the graphics library) to get the computer's screen's dimensions and DPI
 		screen_dimensions = Toolkit.getDefaultToolkit().getScreenSize();
 		screen_dpi = Toolkit.getDefaultToolkit().getScreenResolution();
 		
@@ -100,8 +110,14 @@ public class Device {
 				Math.pow((screen_dimensions.height/screen_dpi), 2) +
 				Math.pow((screen_dimensions.width/screen_dpi), 2));
 		
-		// Fill in other, easy values
-		operating_system = System.getProperty("os.name");
+		
+		
+		// Load in Windows-specific information 
+		if(operating_system.contains("Windows")) {
+			processor_name = System.getenv("PROCESSOR_IDENTIFIER");
+			processor_architecture = System.getenv("PROCESSOR_ARCHITECTURE");
+		}
+		
 	}
 	
 	/**
