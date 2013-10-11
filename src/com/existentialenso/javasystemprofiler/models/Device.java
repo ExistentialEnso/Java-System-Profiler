@@ -7,10 +7,7 @@
 
 package com.existentialenso.javasystemprofiler.models;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.File;
-import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -28,8 +25,14 @@ public class Device {
    */
   protected String name;
   
-  protected String processor_name;
-  
+  /**
+   * The processor's architecture. This currently will only be profiled on Windows.
+   * 
+   * Possible values include but are not limited to...
+   * Intel/AMD 64-bit: "x86-64"
+   * Intel/AMD 32-bit: "x86"
+   * Intel Itanium: "IA64"
+   */
   protected String processor_architecture;
   
   /**
@@ -43,32 +46,22 @@ public class Device {
   protected ArrayList<Drive> drives;
   
   /**
-   * The name of the OS the device is using.
+   * Information about the device's OS.
    */
-  protected String operating_system;
+  protected OperatingSystem operating_system;
   
   /**
-   * The dimensions of the primary screen of this device in pixels. 
+   * Information about the device's primary screen. Secondary monitor info currently not available.
    */
-  protected Dimension screen_dimensions;
-  
-  /**
-   * The DPI (dots per inch) rating for the primary screen for this device.
-   */
-  protected int screen_dpi;
-  
-  /**
-   * The estimated size of the primary screen's panel in inches. Accuracy not guranteed
-   * (calculated from screen_dimensions and screen_dpi).
-   */
-  protected double estimated_screen_size;
+  protected Screen primary_screen;
   
   /**
    * Populates the Device object based on data from the machine actually running the code.
    */
   public void profileThisDevice() {
-    // Easy stuff
-    operating_system = System.getProperty("os.name");
+    // Create and populate our OS object
+    operating_system = new OperatingSystem();
+    operating_system.profileThis();
     
     // Prepare to load Drive information
     FileSystemView fsv = FileSystemView.getFileSystemView();
@@ -101,19 +94,15 @@ public class Device {
       ip_address = "Unknown";
     }
     
-    // Use AWT's (yes, the graphics library) to get the computer's screen's dimensions and DPI
-    screen_dimensions = Toolkit.getDefaultToolkit().getScreenSize();
-    screen_dpi = Toolkit.getDefaultToolkit().getScreenResolution();
-    
-    // Use the Pythagorean theorem to calculate the screen's size (corner to corner in inches)
-    estimated_screen_size = Math.sqrt(
-        Math.pow((screen_dimensions.height/screen_dpi), 2) +
-        Math.pow((screen_dimensions.width/screen_dpi), 2));
+    primary_screen = new Screen();
+    primary_screen.profileThis();
     
     // Windows-only data gathering
-    if(operating_system.contains("Windows")) {
-      processor_name = System.getenv("PROCESSOR_IDENTIFIER");
+    if(operating_system.getName().contains("Windows")) {
       processor_architecture = System.getenv("PROCESSOR_ARCHITECTURE");
+      
+      // Modernize naming conventions a bit
+      if(processor_architecture.equalsIgnoreCase("AMD64")) processor_architecture = "x86-64";
     }
     
   }
@@ -132,7 +121,7 @@ public class Device {
    * 
    * @return The name.
    */
-  public String getOperatingSystem() {
+  public OperatingSystem getOperatingSystem() {
     return operating_system;
   }
   
@@ -143,14 +132,5 @@ public class Device {
    */
   public String getIpAddress() {
     return ip_address;
-  }
-  
-  /**
-   * Gets the estimated screen size of the device's primary screen.
-   * 
-   * @return
-   */
-  public Double getEstimatedScreenSize() {
-    return estimated_screen_size;
   }
 }
