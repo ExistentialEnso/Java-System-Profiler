@@ -110,9 +110,7 @@ public class Device {
 				Math.pow((screen_dimensions.height/screen_dpi), 2) +
 				Math.pow((screen_dimensions.width/screen_dpi), 2));
 		
-		
-		
-		// Load in Windows-specific information 
+		// Windows-only data gathering
 		if(operating_system.contains("Windows")) {
 			processor_name = System.getenv("PROCESSOR_IDENTIFIER");
 			processor_architecture = System.getenv("PROCESSOR_ARCHITECTURE");
