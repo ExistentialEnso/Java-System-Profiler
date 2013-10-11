@@ -24,12 +24,12 @@ import com.google.gson.Gson;
  */
 @WebServlet("/overview.json")
 public class OverviewJsonServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * The device running this servlet.
-	 */
-	private Device device;
+  private static final long serialVersionUID = 1L;
+  
+  /**
+   * The device running this servlet.
+   */
+  private Device device;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,34 +39,34 @@ public class OverviewJsonServlet extends HttpServlet {
         
         // Gets and populates a Device object with info about this computer
         device = new Device();
-		device.profileThisDevice();
+    device.profileThisDevice();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter writer = response.getWriter();
-		
-		// Force a refresh of the device data if requested
-		if(request.getParameter("refresh") != null) {
-			if(request.getParameter("refresh").equals("true")) {
-				device.profileThisDevice();
-			}
-		}
-		
-		// Use Google's GSON library to convert the object to JSON
-		Gson gson = new Gson();
-		String json = gson.toJson(device);
-		
-		writer.print(json);
-	}
+  /**
+   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+   */
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    PrintWriter writer = response.getWriter();
+    
+    // Force a refresh of the device data if requested
+    if(request.getParameter("refresh") != null) {
+      if(request.getParameter("refresh").equals("true")) {
+        device.profileThisDevice();
+      }
+    }
+    
+    // Use Google's GSON library to convert the object to JSON
+    Gson gson = new Gson();
+    String json = gson.toJson(device);
+    
+    writer.print(json);
+  }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.doGet(request, response); // Identical behavior for GET and POST
-	}
+  /**
+   * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+   */
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    this.doGet(request, response); // Identical behavior for GET and POST
+  }
 
 }
