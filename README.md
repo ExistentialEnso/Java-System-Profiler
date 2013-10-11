@@ -1,4 +1,4 @@
-Java-System-Profiler
+Java System Profiler
 ====================
 **PLEASE NOTE:** This is a very functional but very early version of this project. This is lower on my priority list for 
 personal coding projects, though I intend on greatly improving its functionality over time.
@@ -13,6 +13,14 @@ information about a computer, including its drives and their current space. This
 When the Servlet first starts, it will always take longer to respond, as it needs to populate the data initially. After
 this point, it will respond quicker by pulling things out of cache. If you want to ensure the data is up-to-the-second,
 just add "refresh=true" as a parameter to the request (e.g. "/overview.json?refresh=true").
+
+Information Available
+---------------------
+* Canonical Name
+* Local IP Address
+* Operating System
+* Drives, including their space free and total space
+* Primary screen's information (resolution, DPI, estimated size)
 
 Example output:
 
