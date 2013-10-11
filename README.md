@@ -17,15 +17,16 @@ just add "refresh=true" as a parameter to the request (e.g. "/overview.json?refr
 Information Available
 ---------------------
 * Canonical Name
-* Local IP Address
-* Operating System
-* Drives, including their space free and total space
-* Primary screen's information (resolution, DPI, estimated size)
+* IP Address
+* Operating System (including architecture and version)
+* Processor
+* Drives (including free and total space)
+* Primary Monitor (including resolution, DPI, estimated size)
 
 Example output:
 ```
-{"name":"Caspar",
- "ip_address":"192.168.2.142",
+{"name":"JohnDoeLaptop",
+ "ip_address":"192.168.1.10",
  "drives":[
   {"name":"C:\\","display_name":"Windows(C:)","total_space":120031539200,"free_space":14312461312,"is_writable":true},
   {"name":"D:\\","display_name":"Data (D:)","total_space":889661685760,"free_space":375685748736,"is_writable":true}],
