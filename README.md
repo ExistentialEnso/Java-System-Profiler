@@ -14,6 +14,14 @@ When the Servlet first starts, it will always take longer to respond, as it need
 this point, it will respond quicker by pulling things out of cache. If you want to ensure the data is up-to-the-second,
 just add "refresh=true" as a parameter to the request (e.g. "/overview.json?refresh=true").
 
+Information Available
+=====================
+* Canonical Name
+* Local IP Address
+* Operating System
+* Drives, including their space free and total space
+* Primary screen's information (resolution, DPI, estimated size)
+
 Example output:
 
 ```
