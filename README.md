@@ -1,4 +1,4 @@
-Java-System-Profiler
+Java System Profiler
 ====================
 **PLEASE NOTE:** This is a very functional but very early version of this project. This is lower on my priority list for 
 personal coding projects, though I intend on greatly improving its functionality over time.
@@ -15,7 +15,7 @@ this point, it will respond quicker by pulling things out of cache. If you want 
 just add "refresh=true" as a parameter to the request (e.g. "/overview.json?refresh=true").
 
 Information Available
-=====================
+---------------------
 * Canonical Name
 * Local IP Address
 * Operating System
