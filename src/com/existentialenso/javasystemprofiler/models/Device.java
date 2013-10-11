@@ -51,6 +51,11 @@ public class Device {
   protected OperatingSystem operating_system;
   
   /**
+   * Information about the device's processor.
+   */
+  protected Processor processor;
+  
+  /**
    * Information about the device's primary screen. Secondary monitor info currently not available.
    */
   protected Screen primary_screen;
@@ -61,7 +66,15 @@ public class Device {
   public void profileThisDevice() {
     // Create and populate our OS object
     operating_system = new OperatingSystem();
-    operating_system.profileThis();
+    operating_system.profileThisDevice();
+    
+    // Create and populate our Screen object
+    primary_screen = new Screen();
+    primary_screen.profileThisDevice();
+    
+    // Create and populate our Processor object
+    processor = new Processor();
+    processor.profileThisDevice(operating_system);
     
     // Prepare to load Drive information
     FileSystemView fsv = FileSystemView.getFileSystemView();
@@ -92,17 +105,6 @@ public class Device {
     } catch (UnknownHostException e) {
       name = "Unknown";
       ip_address = "Unknown";
-    }
-    
-    primary_screen = new Screen();
-    primary_screen.profileThis();
-    
-    // Windows-only data gathering
-    if(operating_system.getName().contains("Windows")) {
-      processor_architecture = System.getenv("PROCESSOR_ARCHITECTURE");
-      
-      // Modernize naming conventions a bit
-      if(processor_architecture.equalsIgnoreCase("AMD64")) processor_architecture = "x86-64";
     }
     
   }

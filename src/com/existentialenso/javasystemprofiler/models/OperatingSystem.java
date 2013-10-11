@@ -14,7 +14,7 @@ public class OperatingSystem {
   /**
    * Populates the values based on the current machine running the code.
    */
-  public void profileThis() {
+  public void profileThisDevice() {
     name = System.getProperty("os.name");
     version = System.getProperty("os.version");
     architecture = System.getProperty("os.arch");

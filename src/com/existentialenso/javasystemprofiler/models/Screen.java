@@ -10,7 +10,7 @@ public class Screen {
   
   protected double estimated_size;
   
-  public void profileThis() {
+  public void profileThisDevice() {
     // Use AWT's (yes, the graphics library) to get the computer's screen's dimensions and DPI
     dimensions = Toolkit.getDefaultToolkit().getScreenSize();
     dpi = Toolkit.getDefaultToolkit().getScreenResolution();
